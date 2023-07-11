@@ -15,7 +15,7 @@ appProducto.get('/:id?', (req, res) => {
         (err, data, fils) =>{
             console.log(err)
             console.table(data);
-            res.send(data);
+            res.status(200).send(data);
         }
     )
 })
