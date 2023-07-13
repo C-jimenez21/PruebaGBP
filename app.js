@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import appBodegas from './src/routers/appBodegas.js';
 import appProducto from './src/routers/appProductos.js';
+import appInventario from './src/routers/appInventarios.js';
 
 
 dotenv.config();
@@ -12,6 +13,8 @@ expressApp.use(express.json());
 
 expressApp.use('/bodegas', appBodegas);
 expressApp.use('/productos', appProducto);
+expressApp.use('/inventarios', appInventario);
+
 
 
 let config = JSON.parse(process.env.SERVER_CONFIG);

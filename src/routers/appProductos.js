@@ -1,11 +1,9 @@
 import {Router} from 'express';
-import dotenv from 'dotenv';
 import con from '../config/database.js'
 
 const appProducto = Router();
-dotenv.config();
 
-// `SELECT * FROM productos`
+// `SELECT * FROM productos`productos
 appProducto.get('/:id?', (req, res) => {
     let QuerySql = [`SELECT p.id, p.nombre, SUM(i.cantidad) AS Total
     FROM productos p
