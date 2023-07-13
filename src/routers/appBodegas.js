@@ -13,7 +13,7 @@ appBodegas.get('/:id?', (req, res) => {
      
      con.query(...sql,
         (err, data, fils) =>{
-            console.log(err)
+            console.log(err); 
             console.table(data);
             res.send(data);
         }

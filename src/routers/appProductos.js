@@ -5,13 +5,14 @@ import con from '../config/database.js'
 const appProducto = Router();
 dotenv.config();
 
-
+// `SELECT * FROM productos`
 appProducto.get('/:id?', (req, res) => {
-     con.query(`SELECT p.id, p.nombre, SUM(i.cantidad) AS Total
-     FROM productos p
-     INNER JOIN inventarios i ON p.id = i.id_producto
-     GROUP BY p.id, p.nombre
-     ORDER BY Total DESC;`,
+    let QuerySql = [`SELECT p.id, p.nombre, SUM(i.cantidad) AS Total
+    FROM productos p
+    INNER JOIN inventarios i ON p.id = i.id_producto
+    GROUP BY p.id, p.nombre
+    ORDER BY Total DESC;`, `SELECT * FROM productos`]
+     con.query(QuerySql[1],
         (err, data, fils) =>{
             console.log(err)
             console.table(data);
@@ -21,35 +22,38 @@ appProducto.get('/:id?', (req, res) => {
 })
 
 appProducto.post('/', (req, res)=>{
-    con.query(
+    con.query(  
         `INSERT INTO productos SET ?`,
         req.body,
         (err, data, fils)=>{
-            console.log(err);
-            console.table(data);
-            res.status(data.affectedRows+200).send(data)
+            if(err) {
+                console.error('Error al insertar el producto', err);
+                res.status(500).json({err: 'Error al insertar el producto'});
+            }else{
+                console.table(data);
+                const producId = data.insertId;
+                //bodega por default la 12
+                const inventarioData = {
+                    id_bodega: 12,
+                    id_producto: producId,
+                    cantidad: 20
+                };
+            con.query(
+             `INSERT INTO inventarios SET ?`,
+             inventarioData,
+             (err, data) => {
+                if(err){
+                    console.error(err);
+                    res.status(500).json({err: 'Error al insertar el inventario'});
+                }else{
+                    console.table(data);
+                    res.status(201).json({
+                        message: 'Producto creado con éxito'
+                      })
+                    };
+             })
+            }
         }
-    )
-   con.query(
-    `INSERT INTO inventarios SER ?`,
-    {
-        "id": 21,
-        "nombre": "DEFAULTalcrearProducto",
-        "descripcion": "Dulces y mas",
-        "estado": 1,
-        "created_by": 11,
-        "update_by": null,
-        "created_at": "2022-07-01T22:37:06.000",
-        "updated_at": null,
-        "deleted_at": null
-      }
-   ),
-   (err, data, fils) =>{
-        console.log(err)
-        console.table(data)
-        res.status(200).send(data);
-   }
-})
-
+    )});
 
 export default appProducto;
