@@ -1,6 +1,7 @@
 import {Router} from 'express';
 //import dotenv from 'dotenv';
 import con from '../config/database.js'
+import proxyBodega from "../middlewares/validarBodegas.js"
 
 const appBodegas = Router();
 //dotenv.config();
@@ -20,7 +21,7 @@ appBodegas.get('/:id?', (req, res) => {
     )
 })
 
-appBodegas.post('/', (req, res)=>{
+appBodegas.post('/', proxyBodega, (req, res)=>{
     con.query(
         `INSERT INTO bodegas SET ?`,
         req.body,
