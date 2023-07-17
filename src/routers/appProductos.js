@@ -1,5 +1,6 @@
 import {Router} from 'express';
 import con from '../config/database.js'
+import proxyProducto from '../middlewares/validarProductos.js'
 
 const appProducto = Router();
 
@@ -19,7 +20,7 @@ appProducto.get('/:id?', (req, res) => {
     )
 })
 
-appProducto.post('/', (req, res)=>{
+appProducto.post('/', proxyProducto, (req, res)=>{
     con.query(  
         `INSERT INTO productos SET ?`,
         req.body,

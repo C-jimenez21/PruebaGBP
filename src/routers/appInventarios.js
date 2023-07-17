@@ -1,5 +1,6 @@
 import { Router } from "express";
 import con from '../config/database.js'
+import  proxyInventario  from "../middlewares/validarInventario.js"; 
 
 const appInventario = Router();
 
@@ -11,7 +12,7 @@ appInventario.get('/', (req, res) => {
         });
     });
 
-appInventario.post('/', (req, res) => {    
+appInventario.post('/', proxyInventario, (req, res) => {    
     con.query('SELECT * FROM inventarios WHERE id_producto = ? and id_bodega = ?',
     [req.body.id_producto,req.body.id_bodega],
     (err, rows) => {
