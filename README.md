@@ -13,7 +13,7 @@ Este proyecto es una aplicación Node.js que se conecta a  una base de datos MyS
 
 ## Configuración del proyecto
 
-1. Clona este repositorio o descarga los archivos del proyecto}
+1. Clona este repositorio o descarga los archivos del proyecto
 
    `git clone https://github.com/C-jimenez21/PruebaGBP`
 
